@@ -1,0 +1,45 @@
+﻿<Window x:Class="VKAggregator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VKAggregator"
+        mc:Ignorable="d"
+        Title="Аггрегатор ВКонтакте" Height="463.453" Width="600">
+    <Grid Margin="0,0,-8,-13" Background="#FFD6D6D6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="326*"/>
+            <ColumnDefinition Width="96*"/>
+            <ColumnDefinition Width="159*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Label x:Name="TimeLabel" Content="0" Margin="132,10,10,0" VerticalAlignment="Top" FontSize="29.333" Grid.ColumnSpan="3"/>
+        <Button x:Name="buttonDownload" Content="Загрузить граф" HorizontalAlignment="Left" Margin="13,270,0,125" Width="153"  Height="50" Click="buttonDownload_Click"/>
+        <Label  Content="Узлов загружено:" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top"/>
+        <Label  Content="Ребер загружено:" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelVertexCount" Content="0" HorizontalAlignment="Left" Margin="121,64,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelEdgesCount" Content="0" HorizontalAlignment="Left" Margin="121,95,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label" Content="Глубина рекурсии:" HorizontalAlignment="Left" Margin="12,189,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="Критическое количество узлов:" HorizontalAlignment="Left" Margin="12,163,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="Затрачено времени" HorizontalAlignment="Left" Margin="3,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.103,0.098"/>
+        <TextBox x:Name="textBoxVertexMax" HorizontalAlignment="Left" Height="23" Margin="201,167,0,0" TextWrapping="Wrap" Text="100000" VerticalAlignment="Top" Width="65"/>
+        <TextBox x:Name="textBlockDepth" HorizontalAlignment="Left" Margin="201,194,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top"/>
+        <Label x:Name="label3" Content="ID корневого пользователя:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,220,0,0"/>
+        <TextBox x:Name="textBoxRootUser" HorizontalAlignment="Left" Height="23" Margin="201,220,0,0" TextWrapping="Wrap" Text="22920004" VerticalAlignment="Top" Width="120"/>
+        <TextBlock x:Name="State" HorizontalAlignment="Left" Margin="13,356,0,0" TextWrapping="Wrap" Text="Ожидается запуск" VerticalAlignment="Top"/>
+        <Button x:Name="ButtonCondition" Content="Добавить условие" HorizontalAlignment="Left" Margin="166,270,0,0" VerticalAlignment="Top" Width="114" Height="50" Click="button_Click"/>
+        <ListBox x:Name="listBox" Grid.Column="1"  VerticalAlignment="Top" Width="255" Margin="0,50,0,0" Grid.ColumnSpan="2">
+            <StackPanel Margin="5,5,5,5" Orientation="Horizontal">
+                <Label VerticalContentAlignment="Center">Состоит в группе</Label>
+                <Label VerticalContentAlignment="Center" BorderThickness="1" BorderBrush="Black">Наука</Label>
+            </StackPanel>
+            <StackPanel Margin="5,5,5,5" Orientation="Horizontal">
+                <Label VerticalContentAlignment="Center">Город</Label>
+                <Label VerticalContentAlignment="Center" BorderThickness="1" BorderBrush="Black">Краснодар</Label>
+            </StackPanel>
+        </ListBox>
+        <Label x:Name="label4" Content="Дополнительные условия" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="18" Grid.ColumnSpan="2"/>
+
+
+    </Grid>
+</Window>
