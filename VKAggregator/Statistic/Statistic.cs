@@ -85,6 +85,11 @@ namespace VKAggregator.Statistic
 
         public static void LogEnd()
         {
+            if (!Directory.Exists("log"))
+            {
+                DirectoryInfo di = Directory.CreateDirectory("log");
+                return;
+            }
             endTime = DateTime.Now;
             File.Create("log/log_" + DateTime.Now.Day + "_" + DateTime.Now.Month + ".log");
             using (StreamWriter file =

@@ -27,7 +27,7 @@
         <Label x:Name="label3" Content="ID корневого пользователя:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,220,0,0"/>
         <TextBox x:Name="textBoxRootUser" HorizontalAlignment="Left" Height="23" Margin="201,220,0,0" TextWrapping="Wrap" Text="22920004" VerticalAlignment="Top" Width="120"/>
         <TextBlock x:Name="State" HorizontalAlignment="Left" Margin="13,356,0,0" TextWrapping="Wrap" Text="Ожидается запуск" VerticalAlignment="Top"/>
-        <Button x:Name="ButtonCondition" Content="Добавить условие" HorizontalAlignment="Left" Margin="166,270,0,0" VerticalAlignment="Top" Width="114" Height="50" Click="button_Click"/>
+        <Button x:Name="ButtonCondition" Content="Добавить условие" HorizontalAlignment="Left" Margin="166,270,0,0" VerticalAlignment="Top" Width="114" Height="50" Click="button_addCondition"/>
         <ListBox x:Name="listBox" Grid.Column="1"  VerticalAlignment="Top" Width="255" Margin="0,50,0,0" Grid.ColumnSpan="2">
             <StackPanel Margin="5,5,5,5" Orientation="Horizontal">
                 <Label VerticalContentAlignment="Center">Состоит в группе</Label>

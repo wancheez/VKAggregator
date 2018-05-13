@@ -109,7 +109,7 @@ namespace VKAggregator
             
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void button_addCondition(object sender, RoutedEventArgs e)
         {
 
         }

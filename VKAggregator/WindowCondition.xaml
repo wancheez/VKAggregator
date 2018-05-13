@@ -1,0 +1,34 @@
+﻿<Window x:Class="VKAggregator.WindowCondition"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VKAggregator"
+        mc:Ignorable="d"
+        Title="WindowCondition" Height="450" Width="800">
+    <Grid>
+        <ComboBox Text="Выбор свойства" Name="phonesList" Height="30" VerticalAlignment="Top">
+                
+            <TextBlock>Пол</TextBlock>
+                
+            <TextBlock>Город</TextBlock>
+                
+            <TextBlock>Семейное положение</TextBlock>
+                
+            <TextBlock>Место работы</TextBlock>
+                
+            <TextBlock>Языки</TextBlock>
+            
+            <TextBlock>ВУЗ</TextBlock>
+                
+            <TextBlock>Факультет</TextBlock>
+                
+            <TextBlock>Интересы</TextBlock>
+                
+            <TextBlock>Место работы</TextBlock>
+                
+            <TextBlock>Группы</TextBlock>
+
+        </ComboBox>
+    </Grid>
+</Window>

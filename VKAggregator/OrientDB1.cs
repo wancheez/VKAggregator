@@ -5,26 +5,50 @@ using System.Text;
 using System.Threading.Tasks;
 using Orient;
 using Orient.Client;
+using OrientDB_Net.binary.Innov8tive.API;
 
 namespace VKAggregator
 {
     class OrientDB
     {
+        ConnectionOptions opts = new ConnectionOptions();
+        // OPEN DATABASE
+        public ODatabase openDatabase()
+        {
+            opts.HostName = "localhost";
+            opts.UserName = "root";
+            opts.Password = "admin";
+            opts.Port = 2424;
+            opts.DatabaseName = "VK";
+            opts.DatabaseType = ODatabaseType.Graph;
+
+            // CONSOLE LOG
+            Console.WriteLine("Opening Database: {0}", "VK");
+
+            // OPEN DATABASE
+            ODatabase database = new ODatabase(opts);
+
+            // RETURN ODATABASE INSTANCE
+            return database;
+        }
+
         const string databaseAlias = "VK";
         public OrientDB()
         {
-            OClient.CreateDatabasePool(
-                 "localhost",
-                 2424,
-                 "VK",
-                 ODatabaseType.Graph,
-                 "root",
-                 "admin",
-                 100,
-                 databaseAlias
-             );
+            /* OClient.CreateDatabasePool               
+                 (
+                  "127.0.0.1",
+                  2424,
+                  "VK",
+                  ODatabaseType.Graph,
+                  "root",
+                  "admin",
+                  10,
+                  "VKAlias"
+                  );
+                  */
+            openDatabase();
         }
-
 
         /// <summary>
         /// Выполнить кастомный запрос
@@ -34,7 +58,7 @@ namespace VKAggregator
         /// <returns></returns>
         public List<ODocument> PerformQuery(String query, String databaseAlias)
         {
-            using (ODatabase database = new ODatabase(databaseAlias))
+            using (ODatabase database = new ODatabase(opts))
             {
                 List<ODocument> result = database.Query("query");
                 /* foreach (ODocument document in result)
@@ -59,13 +83,18 @@ namespace VKAggregator
         /// <returns></returns>
         public bool WriteVKUsers(List<VK.VKMan> Users)
         {
-            using (ODatabase database = new ODatabase(databaseAlias))
+            using (ODatabase database = new ODatabase(opts))
             {
                 foreach (VK.VKMan User in Users)
                 {
                     //TODO Т.к. мы вставляем через UPSERT, то не получаем ORID. Поэтому надо наверно через select по уникальному vkid его получать.
 
                     Console.WriteLine("User has been added");
+                    var strUpsert = String.Format("UPDATE user set first_name='{0}', last_name='{1}', sex='{2}',bday='{3}',country='{4}'," +
+        "city='{5}',interests='{6}',music='{7}',movies='{8}',games='{9}',about='{10}', vkid='{11}'" +
+        " UPSERT WHERE vkid='{11}'",
+        User.first_name, User.last_name, User.sex, DateTimeAdapter(User.bday), User.country, User.city, User.interests,
+        User.music, User.movies, User.games, "", User.id);
                     string queryString = String.Format("UPDATE user set first_name='{0}', last_name='{1}', sex='{2}',bday='{3}',country='{4}'," +
         "city='{5}',interests='{6}',music='{7}',movies='{8}',games='{9}',about='{10}', vkid='{11}'" +
         " UPSERT WHERE vkid='{11}'",
@@ -82,8 +111,16 @@ namespace VKAggregator
                         );
                         */
                     OCommandResult commandResult = database.Command(queryString);
-                    OCommandResult commandSelectORIDResult = database.Command(queryStringSelectORID);
-                    User.ORID = commandSelectORIDResult.ToDocument().GetField<ODocument>("Content").GetField<ORID>("@ORID").ToString();
+                    //OCommandResult commandSelectORIDResult = database.Command(queryStringSelectORID);
+                    //Переделывал работу с ORIENT CLIENT
+                    //User.ORID = commandSelectORIDResult.ToDocument().GetField<ODocument>("Content").GetField<ORID>("@ORID").ToString();
+                    List<ODocument> result = database.Query(queryStringSelectORID);
+                    foreach (ODocument document in result)
+                    {
+                        User.ORID = document.ORID.ToString();
+                        
+                    }
+                    
                 }
                 return true;
             }
@@ -97,7 +134,7 @@ namespace VKAggregator
         /// <returns></returns>
         public bool WriteVKUserFriends(VK.VKMan rootUser, List<VK.VKMan> Users)
         {
-            using (ODatabase database = new ODatabase(databaseAlias))
+            using (ODatabase database = new ODatabase(opts))
             {
                 foreach (VK.VKMan User in Users)
                 {
@@ -123,10 +160,17 @@ namespace VKAggregator
                     string queryStringSelectORID = string.Format("SELECT FROM user WHERE vkid={0}", User.id);
                     
                     try {
-                        OCommandResult commandResult = database.Command(queryString);
-                        OCommandResult commandSelectORIDResult = database.Command(queryStringSelectORID);
-                        User.ORID = commandSelectORIDResult.ToDocument().GetField<ODocument>("Content").GetField<ORID>("@ORID").ToString();
-                        database.Command(string.Format("CREATE EDGE FROM {0} TO {1} SET weight={2}", rootUser.ORID, User.ORID, calculateWeigth()));
+                        /* OCommandResult commandResult = database.Command(queryString);
+                         OCommandResult commandSelectORIDResult = database.Command(queryStringSelectORID);
+                         User.ORID = commandSelectORIDResult.ToDocument().GetField<ODocument>("Content").GetField<ORID>("@ORID").ToString();
+                         database.Command(string.Format("CREATE EDGE FROM {0} TO {1} SET weight={2}", rootUser.ORID, User.ORID, calculateWeigth()));
+                         */
+                        List<ODocument> result = database.Query(queryStringSelectORID);
+                        foreach (ODocument document in result)
+                        {
+                            User.ORID = document.ORID.ToString();
+
+                        }
                     } catch(OException ex)
                     {
                         
@@ -141,7 +185,7 @@ namespace VKAggregator
         public void writeRecursiveUsers(VK.VKMan rootUser, VK.VKObjects vkInstance,int currDepth, int depth)
         {
             
-                using (ODatabase database = new ODatabase(databaseAlias))
+                using (ODatabase database = new ODatabase(opts))
                 {
                     var Users = vkInstance.getFriendsListFromXML(rootUser.id);
                     Statistic.Statistic.LogVertex(depth,Users.Count);
@@ -157,11 +201,19 @@ namespace VKAggregator
 
                         try
                         {
-                            OCommandResult commandResult = database.Command(queryString);
-                            OCommandResult commandSelectORIDResult = database.Command(queryStringSelectORID);
-                            User.ORID = commandSelectORIDResult.ToDocument().GetField<ODocument>("Content").GetField<ORID>("@ORID").ToString();
-                         //Логируем
-                            database.Command(string.Format("CREATE EDGE Friend FROM {0} TO {1} SET weight={2}", rootUser.ORID, User.ORID, User.rootEdgeWeigth));
+                        OCommandResult commandResult = database.Command(queryString);
+                        OCommandResult commandSelectORIDResult = database.Command(queryStringSelectORID);
+                        User.ORID = commandSelectORIDResult.ToDocument().GetField<ODocument>("Content").GetField<ORID>("@ORID").ToString();
+                        
+                        List<ODocument> result = database.Query(queryStringSelectORID);
+                        foreach (ODocument document in result)
+                        {
+                            User.ORID = document.ORID.ToString();
+
+                        }
+                        //Логируем
+                        var comupsert = string.Format("CREATE EDGE Friend FROM {0} TO {1} SET weight={2}", rootUser.ORID, User.ORID, User.rootEdgeWeigth);
+                        database.Command(string.Format("CREATE EDGE Friend FROM {0} TO {1} SET weight={2}", rootUser.ORID, User.ORID, User.rootEdgeWeigth));
                         //Statistic.Statistic.LogEdge(depth,);//Логгируем
                         if (currDepth < depth)
                         {
@@ -185,7 +237,7 @@ namespace VKAggregator
         public void truncateDatabase()
         {
             
-            using (ODatabase database = new ODatabase(databaseAlias))
+            using (ODatabase database = new ODatabase(opts))
             {
                 string queryTruncateUser = string.Format("truncate class User unsafe");
                 string queryTruncateFriend = string.Format("truncate class Friend unsafe");

@@ -36,7 +36,8 @@ namespace VKAggregator.VK
             XmlDocument result = new XmlDocument();
             try
             {
-                result.Load(String.Format("https://api.vk.com/method/{0}.xml?access_token={1}&{2}", name, accessToken, String.Join("&", from item in qs.AllKeys select item + "=" + qs[item])));
+                Console.WriteLine(String.Format("https://api.vk.com/method/{0}.xml?access_token={1}&{2}&v=5.74", name, accessToken, String.Join("&", from item in qs.AllKeys select item + "=" + qs[item])));
+                result.Load(String.Format("https://api.vk.com/method/{0}.xml?access_token={1}&{2}&v=5.74", name, accessToken, String.Join("&", from item in qs.AllKeys select item + "=" + qs[item])));
             }
             catch (System.Net.WebException)
             {

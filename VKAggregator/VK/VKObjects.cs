@@ -71,7 +71,7 @@ namespace VKAggregator.VK
             int temp_int;
             string UserIdList = "";
             //Перебираем users
-            foreach (XmlNode userXML in XMLMen.DocumentElement.ChildNodes)
+            foreach (XmlNode userXML in XMLMen.DocumentElement.ChildNodes[1].ChildNodes)
             {
                 //Обработка ошибок
                 if (userXML.Name != "error_code"&& userXML.Name !="error_msg" && userXML.Name != "request_params")
