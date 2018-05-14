@@ -25,6 +25,10 @@ namespace VKAggregator
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Объявляем список делегатов, чтоб туда добавлять функции фильтрации
+        public delegate Boolean condDelegate(VK.VKMan vkman, string condition);
+        public List<condDelegate> listConditions = new List<condDelegate>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -94,8 +98,14 @@ namespace VKAggregator
                 startCollecting(rootUser, depth,max);
                 
             }
-
             
+            //Тестирование делегатов
+
+            //foreach (condDelegate func in listConditions)
+            //    func(null, null);
+
+
+
         }
 
         private void updateStatsView(object sender, EventArgs e)
@@ -111,7 +121,9 @@ namespace VKAggregator
 
         private void button_addCondition(object sender, RoutedEventArgs e)
         {
-
+            WindowCondition windowCondition = new WindowCondition();
+            windowCondition.Owner = this;
+            windowCondition.Show();
         }
     }
 }

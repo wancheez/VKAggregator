@@ -41,6 +41,8 @@ namespace VKAggregator.VK
                 {
                     dateTemp = Convert.ToDateTime("01.01.0001");
                 }
+                List<VKGroup> UserGroups = getUserGroups(Convert.ToInt32(userNodes[0].InnerText), "city");
+
                 //TODO Надо выбирать по называнию узла, т.к. если там ниче нет, узел не передается
                 //Пометка: вроде передается пустой тег, так что все норм
                 VKMen.Add(new VKMan
@@ -56,7 +58,8 @@ namespace VKAggregator.VK
                      movies: userNodes[9]?.InnerText ?? "",
                      games: userNodes[10]?.InnerText ?? "",
                      about: userNodes[11]?.InnerText ?? "",
-                     rootEdgeWeigth: 0));
+                     rootEdgeWeigth: 0,
+                     userGroups: UserGroups));
                      
             }
             return VKMen;
@@ -89,6 +92,7 @@ namespace VKAggregator.VK
 
                     //TODO Надо выбирать по называнию узла, т.к. если там ниче нет, узел не передается
                     //Пометка: вроде передается пустой тег, так что все норм
+                    List<VKGroup> UserGroups = getUserGroups(Convert.ToInt32(userNodes[0].InnerText), "city");
 
                     //TODO: Падает на несозданном пользователе
                     VKMen.Add(new VKMan
@@ -105,7 +109,8 @@ namespace VKAggregator.VK
                          movies: userNodes[9]?.InnerText ?? "",
                          games: userNodes[10]?.InnerText ?? "",
                          about: userNodes[11]?.InnerText ?? "",
-                         rootEdgeWeigth: 0
+                         rootEdgeWeigth: 0,
+                         userGroups: UserGroups
                          ));
                     UserIdList += VKMen.Last().id.ToString() + ',';
                 }

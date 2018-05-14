@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VKAggregator"
         mc:Ignorable="d"
-        Title="WindowCondition" Height="450" Width="800">
+        Title="Ввод фильтра" Height="142" Width="797">
     <Grid>
-        <ComboBox Text="Выбор свойства" Name="phonesList" Height="30" VerticalAlignment="Top">
+        <ComboBox Text="Выбор свойства" Name="phonesList" Height="30" VerticalAlignment="Top" Margin="10,35,548,0">
                 
             <TextBlock>Пол</TextBlock>
                 
@@ -18,7 +18,7 @@
             <TextBlock>Место работы</TextBlock>
                 
             <TextBlock>Языки</TextBlock>
-            
+
             <TextBlock>ВУЗ</TextBlock>
                 
             <TextBlock>Факультет</TextBlock>
@@ -30,5 +30,9 @@
             <TextBlock>Группы</TextBlock>
 
         </ComboBox>
+        <Label Content="Выбор свойства" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="32" Margin="348,34,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="409"/>
+        <Label Content="Значение" HorizontalAlignment="Left" Margin="352,6,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Button Content="Готово" HorizontalAlignment="Left" Margin="11,72,0,0" VerticalAlignment="Top" Width="105" Height="32" Click="Button_Click"/>
     </Grid>
 </Window>

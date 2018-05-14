@@ -9,7 +9,7 @@ namespace VKAggregator.VK
     /// <summary>
     /// Класс представляет собой описание данных пользователя ВК
     /// </summary>
-    class VKMan
+    public class VKMan
     {
         //Список полей, нужных объекту
         public const string fieldNeededList = "sex,bdate,country,city,interests,music," +
@@ -30,10 +30,11 @@ namespace VKAggregator.VK
         public string about { get; set; }
         public string ORID { get; set; }
         public int rootEdgeWeigth { get; set; }
+        public List<VKGroup> userGroups { get; set; }
 
         public VKMan(int id, string first_name, string last_name, string sex, DateTime bday, string country, string city,
         string interests, string music, string movies, string games,
-        string about, int rootEdgeWeigth)
+        string about, int rootEdgeWeigth, List<VKGroup> userGroups)
         {
             this.id = id;
             this.first_name = first_name;
@@ -50,6 +51,7 @@ namespace VKAggregator.VK
             this.about = about;
             this.ORID = "";
             this.rootEdgeWeigth = 0;//Вес ребра от пользователя, чьим другом является
+            this.userGroups = userGroups;
         }
 
     }

@@ -4,6 +4,8 @@ using System.Text;
 using System.Xml;
 using System.Collections.Specialized;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace VKAggregator.VK
 {
@@ -55,6 +57,8 @@ namespace VKAggregator.VK
             }
             return result;
         }
+
+
 
         private XmlDocument ExecuteWOTokenCommand(string name, NameValueCollection qs)
         {
@@ -371,6 +375,47 @@ namespace VKAggregator.VK
             }
 
             return ExecuteCommand("friends.getMutual", qs);
+        }
+
+
+        /// <summary>
+        /// Возвращает список сообществ указанного пользователя. JSON!!!!!
+        /// </summary>
+        /// <param name="user_id">идентификатор пользователя, информацию о сообществах которого требуется получить. </param>
+        /// <param name="fields">список дополнительных полей, которые необходимо вернуть. Возможные значения: city, country, place, description, wiki_page, members_count, counters, start_date, finish_date, can_post, can_see_all_posts, activity, status, contacts, links, fixed_post, verified, site, can_create_topic</param>
+        /// <param name="count">количество сообществ, информацию о которых нужно вернуть</param>
+        /// <returns></returns>
+        public List<VKGroup> getUserGroups(int user_id, string fields, int count=1000)
+        {
+            NameValueCollection qs = new NameValueCollection();
+            qs["user_id"] = user_id.ToString();
+            if (fields.ToString().Equals(""))
+            {
+                qs["fields"] = "city";//Смещение относительно начала списка аудиозаписей
+            }
+            else
+            {
+                qs["fields"] = fields.ToString(); //количество аудиозаписей, информацию о которых необходимо вернуть. Максимальное значение — 6000. 
+            }
+
+            qs["count"] = count.ToString();
+            qs["extended"] = "1";
+            //Используем JSON и сразу возвращаем объект группы
+
+            //return ExecuteCommand("groups.get", qs);
+            //return (List<VKGroup>) ExecuteCommandJson <List<VKGroup>>("groups.get", qs);
+            //TODO починить парсинг групп
+            return JsonConvert.DeserializeObject<T>(new WebClient().DownloadString(url));
+        }
+
+        public Object ExecuteCommandJson<T>(string method, NameValueCollection qs)
+        {
+            var url = String.Format("https://api.vk.com/method/{0}?access_token={1}&{2}&v=5.74", method, accessToken, String.Join("&", from item in qs.AllKeys select item + "=" + qs[item]));
+
+            string var1 = new WebClient().DownloadString(url);
+
+            var parsed = JsonConvert.DeserializeObject<T>(new WebClient().DownloadString(url));
+            return parsed;
         }
     }
 

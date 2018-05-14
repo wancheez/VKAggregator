@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OrientDB-Net.binary.Innov8tive">
       <HintPath>..\libs\net451\OrientDB-Net.binary.Innov8tive.dll</HintPath>
     </Reference>
@@ -66,12 +69,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FilterMethods.cs" />
     <Compile Include="Messaging\Rabbit.cs" />
     <Compile Include="Messaging\RabbitMqService.cs" />
     <Compile Include="OrientDB1.cs" />
     <Compile Include="Statistic\Statistic.cs" />
     <Compile Include="VK\OAuth.cs" />
     <Compile Include="VK\VKAPI.cs" />
+    <Compile Include="VK\VKGroup.cs" />
     <Compile Include="VK\VKMan.cs" />
     <Compile Include="VK\VKObjects.cs" />
     <Compile Include="WebAuthPage.xaml.cs">

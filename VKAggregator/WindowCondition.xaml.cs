@@ -23,5 +23,14 @@ namespace VKAggregator
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var own = (MainWindow)this.Owner;
+            own.listConditions.Add(FilterMethods.FilterCity);
+            this.Close();
+
+        }
+
     }
 }
