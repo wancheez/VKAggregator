@@ -13,7 +13,7 @@ namespace VKAggregator.VK
     {
         //Список полей, нужных объекту
         public const string fieldNeededList = "sex,bdate,country,city,interests,music," +
-            "movies,games,about";
+            "movies,games,about,education";
 
         public int id { get; set; }
         public string first_name { get; set; }
@@ -25,6 +25,8 @@ namespace VKAggregator.VK
         public string relatives { get; set; }
         public string interests { get; set; }
         public string music { get; set; }
+        public string university_name { get; set; }
+        public string faculty_name { get; set; }
         public string movies { get; set; }
         public string games { get; set; }
         public string about { get; set; }
@@ -33,7 +35,7 @@ namespace VKAggregator.VK
         public List<VKGroup> userGroups { get; set; }
 
         public VKMan(int id, string first_name, string last_name, string sex, DateTime bday, string country, string city,
-        string interests, string music, string movies, string games,
+        string interests, string music, string movies, string games, string university_name, string faculty_name,
         string about, int rootEdgeWeigth, List<VKGroup> userGroups)
         {
             this.id = id;
@@ -47,6 +49,8 @@ namespace VKAggregator.VK
             this.interests = interests;
             this.music = music;
             this.movies = movies;
+            this.faculty_name = faculty_name;
+            this.university_name = university_name;
             this.games = games;
             this.about = about;
             this.ORID = "";

@@ -83,6 +83,33 @@ namespace VKAggregator.Statistic
 
         }
 
+        public static void printErr()
+        {
+            if (!Directory.Exists("log"))
+            {
+                DirectoryInfo di = Directory.CreateDirectory("log");
+                return;
+            }
+            endTime = DateTime.Now;
+            File.Create("log/log_" + DateTime.Now.Day + "_" + DateTime.Now.Month + ".log");
+            using (StreamWriter file =
+              new StreamWriter("log_" + DateTime.Now.Day + "_" + DateTime.Now.Month + ".log"))
+            {
+                file.WriteLine(string.Format("Begin Time: {0}", beginTime));
+                foreach (KeyValuePair<int, int> kvp in layerSizeVertex)
+                {
+                    file.WriteLine("Layer: {0}, Vertex = {1}, Edges = {2}", kvp.Key, kvp.Value, layerSizeEdge[kvp.Key]);
+                }
+
+                foreach (String err in errList)
+                {
+                    file.WriteLine("ERROR: {0}", errList);
+                }
+
+                file.WriteLine(string.Format("End Time: {0}", endTime));
+            }
+        }
+
         public static void LogEnd()
         {
             if (!Directory.Exists("log"))
@@ -93,7 +120,7 @@ namespace VKAggregator.Statistic
             endTime = DateTime.Now;
             File.Create("log/log_" + DateTime.Now.Day + "_" + DateTime.Now.Month + ".log");
             using (StreamWriter file =
-              new StreamWriter("D:/log_" + DateTime.Now.Day + "_" + DateTime.Now.Month + ".log"))
+              new StreamWriter("log_" + DateTime.Now.Day + "_" + DateTime.Now.Month + ".log"))
             {
                 file.WriteLine(string.Format("Begin Time: {0}", beginTime));
                 foreach (KeyValuePair<int, int> kvp in layerSizeVertex)

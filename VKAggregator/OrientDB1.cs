@@ -182,15 +182,16 @@ namespace VKAggregator
             }
         }
 
-        public void writeRecursiveUsers(VK.VKMan rootUser, VK.VKObjects vkInstance,int currDepth, int depth)
+        public void writeRecursiveUsers(VK.VKMan rootUser, VK.VKObjects vkInstance,int currDepth, int depth, List<MainWindow.conditionArr> listConditions)
         {
             
                 using (ODatabase database = new ODatabase(opts))
                 {
-                    var Users = vkInstance.getFriendsListFromXML(rootUser.id);
+                    var Users = vkInstance.getFriendsListFromXML(rootUser.id, listConditions);
                     Statistic.Statistic.LogVertex(depth,Users.Count);
                     foreach (VK.VKMan User in Users)
                     {
+                     
                         string queryString = String.Format("UPDATE user set first_name='{0}', last_name='{1}', sex='{2}',bday='{3}',country='{4}'," +
                                 "city='{5}',interests='{6}',music='{7}',movies='{8}',games='{9}',about='{10}', vkid='{11}'" +
                                 " UPSERT WHERE vkid='{11}'",
@@ -218,7 +219,7 @@ namespace VKAggregator
                         if (currDepth < depth)
                         {
                             currDepth++;
-                            writeRecursiveUsers(User, vkInstance,currDepth, depth);
+                            writeRecursiveUsers(User, vkInstance,currDepth, depth, listConditions);
                             currDepth--;
                         }
                        }

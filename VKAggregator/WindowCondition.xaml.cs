@@ -27,10 +27,23 @@ namespace VKAggregator
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var own = (MainWindow)this.Owner;
-            own.listConditions.Add(FilterMethods.FilterCity);
-            this.Close();
+
+            switch (ConditionList.Text)
+            {
+                case "ВУЗ":
+                    own.listConditions.Add(new MainWindow.conditionArr(FilterMethods.FilterUni, TextBoxCondition.Text));
+                    MessageBox.Show("Условие добавлено");
+                    break;
+              
+            }
+
+            
 
         }
 
+        private void Button_Click_Close(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

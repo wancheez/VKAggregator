@@ -27,7 +27,20 @@ namespace VKAggregator
     {
         //Объявляем список делегатов, чтоб туда добавлять функции фильтрации
         public delegate Boolean condDelegate(VK.VKMan vkman, string condition);
-        public List<condDelegate> listConditions = new List<condDelegate>();
+
+        public class conditionArr
+        {
+            public condDelegate delegate_ ;
+            public string condition_;
+
+            public conditionArr(condDelegate delegate_, string condition_)
+            {
+                this.delegate_ = delegate_;
+                this.condition_ = condition_;
+            }
+        }
+
+        public List<conditionArr> listConditions = new List<conditionArr>();
 
         public MainWindow()
         {
@@ -65,7 +78,7 @@ namespace VKAggregator
                 Statistic.Statistic.LogEdge(0, rootUser.Count);
                 //orientDBAccessPoint.WriteVKUserFriends(rootUser[0], MenObjects.getFriendsListFromXML(22920004));
                 //Первичная входная точка для рекурсии
-                orientDBAccessPoint.writeRecursiveUsers(rootUser.First(), MenObjects, 0, depth);
+                orientDBAccessPoint.writeRecursiveUsers(rootUser.First(), MenObjects, 0, depth, listConditions);
                
                 TimeSpan ts = stopWatch.Elapsed;
 

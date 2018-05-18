@@ -10,7 +10,6 @@ namespace VKAggregator
     {
         public static Boolean FilterSex(VK.VKMan vkman, string condition)
         {
-            Console.WriteLine("Делегат 1 выполнен");
             if (vkman.sex.Contains(condition))
             {
                 return true;
@@ -21,7 +20,6 @@ namespace VKAggregator
 
         public static Boolean FilterCity(VK.VKMan vkman, string condition)
         {
-            Console.WriteLine("Делегат 1 выполнен");
             if (vkman.city.Contains(condition))
             {
                 return true;
@@ -31,7 +29,6 @@ namespace VKAggregator
 
         public static Boolean FilterInterests(VK.VKMan vkman, string condition)
         {
-            Console.WriteLine("Делегат 1 выполнен");
             if (vkman.interests.Contains(condition))
             {
                 return true;
@@ -41,8 +38,16 @@ namespace VKAggregator
 
         public static Boolean FilterGroups(VK.VKMan vkman, string condition)
         {
-            Console.WriteLine("Делегат 1 выполнен");
             if (vkman.city.Contains(condition))
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        public static Boolean FilterUni(VK.VKMan vkman, string condition)
+        {
+            if (vkman.university_name.Contains(condition))
             {
                 return true;
             }

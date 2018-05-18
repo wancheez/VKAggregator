@@ -74,7 +74,7 @@ namespace VKAggregator.VK
         /// <param name="uid">перечисленные через запятую идентификаторы пользователей или их короткие имена (screen_name). По умолчанию — идентификатор текущего пользователя. </param>
         /// <param name="fields">Доступные значения: sex, bdate, city, country, photo_50, photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig, photo_id, online, online_mobile, domain, has_mobile, contacts, connections, site, education, universities, schools, can_post, can_see_all_posts, can_see_audio, can_write_private_message, status, last_seen, common_count, relation, relatives, counters, screen_name, maiden_name, timezone, occupation,activities, interests, music, movies, tv, books, games, about, quotes </param>
         /// <returns></returns>
-        public XmlDocument getProfile(int uid = 1, string fields = "")
+        public XmlDocument getProfile(int uid = 1, string fields = "career")
         {
             NameValueCollection qs = new NameValueCollection();
             if (uid != 1)
@@ -207,7 +207,7 @@ namespace VKAggregator.VK
         public XmlDocument getFriends(int uid, int count, int offset, string order = "hints", string fields = "")
         {
             NameValueCollection qs = new NameValueCollection();
-            qs["uid"] = uid.ToString();
+            qs["user_id"] = uid.ToString();
             qs["offset"] = offset.ToString();
             qs["count"] = count.ToString();
             if (fields != "")
@@ -215,6 +215,12 @@ namespace VKAggregator.VK
                 qs["order"] = order;
                 qs["fields"] = fields;
             }
+            if(ExecuteCommand("friends.get", qs).Attributes is null)
+            {
+                var result = ExecuteCommand("friends.get", qs) ;
+                Console.Write("null");
+            }
+            // Проверка на возврат ошибки
 
             return ExecuteCommand("friends.get", qs);
         }
@@ -404,8 +410,25 @@ namespace VKAggregator.VK
 
             //return ExecuteCommand("groups.get", qs);
             //return (List<VKGroup>) ExecuteCommandJson <List<VKGroup>>("groups.get", qs);
-            //TODO починить парсинг групп
-            return JsonConvert.DeserializeObject<T>(new WebClient().DownloadString(url));
+
+            var url = String.Format("https://api.vk.com/method/{0}?access_token={1}&{2}&v=5.74", "groups.get", accessToken, String.Join("&", from item in qs.AllKeys select item + "=" + qs[item]));
+            var test1 = new WebClient().DownloadString(url);
+            ;
+            
+
+            using (WebClient webClient = new WebClient())
+            {
+                webClient.Encoding = Encoding.UTF8;
+               System.Threading.Thread.Sleep(400);
+
+                var result = JsonConvert.DeserializeObject<Data>(webClient.DownloadString(url));
+                if (result.response is null) {
+                    Statistic.Statistic.logError("Error getting groups for id:" + qs["user_id"] + " err_code:" + result.error.error_code + " err_msg: " + result.error.error_msg);
+                    return new List<VKGroup>();
+                } else
+                    return result.response.items.OfType<VKGroup>().ToList();
+            }
+            
         }
 
         public Object ExecuteCommandJson<T>(string method, NameValueCollection qs)

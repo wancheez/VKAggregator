@@ -31,6 +31,24 @@ namespace VKAggregator.VK
         }
     }
 
-   
+   public class response
+    {
+        public int count;
+        public VKGroup[] items;
+    }
+    public class error
+    {
+        public int error_code;
+        public string error_msg;
+    }
+
+
+    class Data
+    {
+        public response response;
+        public error error;
+    }
+
+
 
 }
